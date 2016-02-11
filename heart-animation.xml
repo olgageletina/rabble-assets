@@ -2,16 +2,41 @@
 
 <html lang="en">
 <style>
-@keyframes pound {
-  from { transform: none; }
-  50% { transform: scale(0.8); }
-  to { transform: none; }
+ @import "compass/css3";
+  @mixin keyframes($name) {
+  @-webkit-keyframes #{$name} { @content }
+  @-moz-keyframes #{$name} { @content }
+  @-o-keyframes #{$name} { @content }
+  @keyframes #{$name} { @content }
 }
 
-#heart {
-  animation: pound 1.1s infinite;
-  transform-origin: center;
-  transition:1s ease-in-out;
+@mixin experimental($property, $value, $moz: true, $webkit: true, $o: true, $ms: true, $khtml: true, $official: true) {
+  @if $webkit   { -webkit-#{$property} : $value; }
+  @if $khtml    {  -khtml-#{$property} : $value; }
+  @if $moz      {    -moz-#{$property} : $value; }
+  @if $ms       {     -ms-#{$property} : $value; }
+  @if $o        {      -o-#{$property} : $value; }
+  @if $official {         #{$property} : $value; }
+}
+
+@mixin animation($value) {
+  @include experimental(animation, $value);
+}
+
+@include keyframes(heartbeat) {
+  0%  { @include transform($heartbeat-rotation scale(1));   }
+  14% { @include transform($heartbeat-rotation scale(1.3)); }
+  28% { @include transform($heartbeat-rotation scale(1));   }
+  42% { @include transform($heartbeat-rotation scale(1.3)); }
+  70% { @include transform($heartbeat-rotation scale(1));   }
+}
+
+.heartbeat {
+    transition:1s ease-in-out;
+}
+.heartbeat:hover {
+    transform:scale(2);
+    transform-origin: left bottom;
 }
 </style>
 <body>
